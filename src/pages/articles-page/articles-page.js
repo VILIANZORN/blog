@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Pagination } from 'antd';
 
@@ -12,9 +12,10 @@ import classes from './articles-page.module.scss';
 export default function ArticlesPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = searchParams.get('page') ?? 1;
+  const page = parseInt(searchParams.get('page'), 10) || 1;
 
-  const slice = (page - 1) * 5;
+  const slice = useMemo(() => (page - 1) * 5, [page]);
+
   const {
     data: articlesData,
     error,
@@ -23,32 +24,41 @@ export default function ArticlesPage() {
     refetchOnMountOrArgChange: true,
   });
 
+  useEffect(() => {
+    setSearchParams({ page });
+  }, [page, setSearchParams]);
+
   const onChange = (value) => {
     navigate('/articles');
-    setSearchParams({ ...searchParams, page: value });
+    setSearchParams({ page: value });
   };
 
-  const articles = articlesData && articlesData.articles;
-  const articlesCount = articlesData && articlesData.articlesCount;
-
-  const pagination = articlesData && (
-    <Pagination
-      className={classes.pagination}
-      showSizeChanger={false}
-      total={articlesCount}
-      hideOnSinglePage
-      pageSize={5}
-      current={page}
-      onChange={onChange}
-    />
-  );
+  const articles = articlesData?.articles;
+  const articlesCount = articlesData?.articlesCount;
 
   return (
     <div className={classes.container}>
-      {error ? <ErrorMessage /> : null}
-      {isLoading ? <SpinLoading /> : null}
-      {articlesData && articles.map((article) => <Card key={article.slug} article={article} isFull={false} />)}
-      {pagination}
+      {error && <ErrorMessage />}
+      {isLoading ? (
+        <SpinLoading />
+      ) : (
+        <>
+          {articles && articles.map((article) => (
+            <Card key={article.slug} article={article} isFull={false} />
+          ))}
+          {articlesCount > 0 && (
+            <Pagination
+              className={classes.pagination}
+              showSizeChanger={false}
+              total={articlesCount}
+              hideOnSinglePage
+              pageSize={5}
+              current={page}
+              onChange={onChange}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 }

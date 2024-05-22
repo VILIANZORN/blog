@@ -13,7 +13,7 @@ function CreateArticlePage() {
 
   const methods = useForm({ mode: 'onSubmit' });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const requestData = {
       article: {
         ...data,
@@ -21,9 +21,12 @@ function CreateArticlePage() {
       },
     };
 
-    createArticle(requestData)
-      .unwrap()
-      .then((res) => navigate(`/articles/${res.article.slug}`));
+    try {
+      const res = await createArticle(requestData).unwrap();
+      navigate(`/articles/${res.article.slug}`);
+    } catch (error) {
+      console.error("Failed to create article:", error);
+    }
   };
 
   if (isLoading) return <SpinLoading />;

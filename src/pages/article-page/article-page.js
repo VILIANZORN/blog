@@ -5,17 +5,23 @@ import { useGetSoloArticleQuery } from '../../store/API/articlesApi';
 import Card from '../../components/card/card';
 import ErrorMessage from '../../components/error-message/error-message';
 
-function ArticlePage() {
+export default function ArticlePage() {
   const { slug } = useParams();
   const { data: articleData, error, isLoading } = useGetSoloArticleQuery(slug, { refetchOnMountOrArgChange: true });
 
-  return (
-    <>
-      {error ? <ErrorMessage /> : null}
-      {isLoading ? <SpinLoading /> : null}
-      {articleData && <Card article={articleData.article} isFull />}
-    </>
-  );
+  if (error) {
+    return <ErrorMessage />;
+  }
+
+  if (isLoading) {
+    return <SpinLoading />;
+  }
+
+  if (articleData) {
+    return <Card article={articleData.article} isFull />;
+  }
+
+  return null;
 }
 
-export default ArticlePage;
+

@@ -11,14 +11,15 @@ import SignInput from '../../components/sign-input/sing-input';
 
 import classes from './edit-profile-page.module.scss';
 
+const USERNAME_ERROR = 'Username is already taken';
+const EMAIL_ERROR = 'Email is already taken';
+
 export default function EditProfilePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [editAccount, { isLoading }] = useUpdateUserMutation();
   const { username: defaultUserName, email: defaultEmail, image: defaultImage } = useAuth();
-
-  const updateUserDispatch = (data) => dispatch(setUser(data));
 
   const methods = useForm({
     mode: 'onSubmit',
@@ -30,39 +31,26 @@ export default function EditProfilePage() {
   });
   const { handleSubmit, reset, setError } = methods;
 
-  const onSubmit = ({ username, email, password, image }) => {
-    const requestData = {
-      user: {
-        username,
-        email,
-        password,
-        image,
-      },
-    };
+  const onSubmit = async ({ username, email, password, image }) => {
+    try {
+      const requestData = { user: { username, email, password, image } };
+      const { user } = await editAccount(requestData).unwrap();
 
-    editAccount(requestData)
-      .unwrap()
-      .then((editedData) => {
-        updateUserDispatch(editedData.user);
+      dispatch(setUser(user));
+      reset();
+      navigate('/');
+    } catch (e) {
+      if (e.data?.errors) {
+        const { username: usernameError, email: emailError } = e.data.errors;
 
-        reset();
-        navigate('/');
-      })
-      .catch((e) => {
-        if (e.data.errors.username) {
-          setError('username', {
-            type: 'busy',
-            message: 'Username is already taken',
-          });
+        if (usernameError) {
+          setError('username', { type: 'busy', message: USERNAME_ERROR });
         }
-
-        if (e.data.errors.email) {
-          setError('email', {
-            type: 'busy',
-            message: 'Email is already taken',
-          });
+        if (emailError) {
+          setError('email', { type: 'busy', message: EMAIL_ERROR });
         }
-      });
+      }
+    }
   };
 
   if (isLoading) return <SpinLoading />;
@@ -74,16 +62,11 @@ export default function EditProfilePage() {
             <h2 className={classes.header}>Edit profile</h2>
 
             <SignInput label="Username" id="username" type="text" placeholder="Username" />
-
             <SignInput label="Email address" id="email" type="email" placeholder="Email address" />
-
             <SignInput label="New password" id="password" type="password" placeholder="Password" />
-
             <SignInput label="Avatar image (url)" id="image" type="url" placeholder="Avatar image" />
 
-            <button className={classes['save-btn']} type="submit">
-              Save
-            </button>
+            <button className={classes['save-btn']} type="submit">Save</button>
           </form>
         </FormProvider>
       </div>
