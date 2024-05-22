@@ -1,0 +1,89 @@
+.visible {
+    position: absolute;
+    top: 0;
+    right: -250px;
+    width: 240px;
+    height: 104px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 10px 10px 40px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 1px 4px 15px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    background: var(--Grey-grey-1, #FFF);
+  }
+  
+  .hidden {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    display: none;
+  }
+.text{
+    color: var(--Grey-grey-8, #595959);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; 
+}
+.icon {
+    font-size: 18px;
+    color: #faad14;
+    position: absolute;
+    left: 15px;
+    top: 12px;
+}
+
+.no-btn{
+    width: 34px;
+    height: 24px;
+    padding: 1px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--Grey-grey-5, #D9D9D9);
+    background: var(--Grey-grey-1, #ff3838);
+    color: var(--Grey-grey-8, #ffffff);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    cursor: pointer;
+    transition: .4s ease-in-out;
+    &:hover{
+        border: 1px solid black;
+        background: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+    }
+}
+.yes-btn{
+    width: 39px;
+    height: 24px;
+    padding: 1px 8px;
+    border-radius: 4px;
+    background: var(--Daybreak-Blue-blue-6, #1890FF);
+    color: var(--Grey-grey-1, #FFF);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    border: 0;
+    cursor: pointer;
+    transition: .4s ease-in-out;
+    &:hover{
+        border: 1px solid black;
+        background: white;
+        color: black;
+    }
+}
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}

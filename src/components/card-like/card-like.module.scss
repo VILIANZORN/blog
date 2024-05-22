@@ -1,0 +1,28 @@
+.like-button{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+.like-icon {
+    width: 14.277px;
+    height: 13.046px;
+    display: flex;
+    align-items: center;
+  }
+  .like-button .like-icon path {
+    fill: white; 
+    transition: fill 0.3s ease; 
+  }
+  .like-button:hover .like-icon path {
+    fill: red;
+  }
+.like-icon__delete{
+  width: 14.277px;
+  height: 13.046px;
+  display: flex;
+  align-items: center;
+}
+.like-button .like-icon__delete path {
+  fill: red; 
+}

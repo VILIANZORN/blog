@@ -1,0 +1,43 @@
+.header--text{
+    color: var(--heading-color, rgba(0, 0, 0, 0.85));
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.header__sign-in{
+    width: 109px;
+    height: 51px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid var(--success-color, #ffffff);
+    cursor: pointer;
+    transition: .4s ease-in-out;
+    &:hover{
+        background-color: #f3f3f3;
+        border: 1px solid var(--success-color, #a3a3a3);
+    }
+}
+.header__sign-up{
+    color: var(--success-color, #52C41A);
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid var(--success-color, #52C41A);
+    width: 109px;
+    height: 51px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: .4s ease-in-out;
+    &:hover{
+        background-color: #f0ffde;
+    }
+}
+
+.header__btn{
+    display: flex;
+    gap: 19px;
+    align-items: center;
+    padding-right: 22px;
+}

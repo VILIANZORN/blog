@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px 0px;
+    color: #f5000c89;
+    & .title {
+      font-size: 28px;
+    }
+    & .text {
+      color: rgb(70, 70, 70);
+    }
+    & .message {
+      color: rgb(70, 70, 70);
+    }
+  }
