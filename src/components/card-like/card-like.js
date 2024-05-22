@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
@@ -7,18 +7,23 @@ import { useSetFavoriteArticleMutation, useDeleteFavoriteArticleMutation } from 
 import { ReactComponent as LikeIcon } from './heart1.svg';
 import classes from './card-like.module.scss';
 
-export default function CardLike({ article }) {
+export default function CardLike({ article, onLikeChange }) {
   const navigate = useNavigate();
   const { isAuth } = useAuth();
-  const { slug, favorited } = article;
+  const { slug, favorited: initialFavorited } = article;
+  const [favorited, setFavorited] = useState(initialFavorited);
   const [setLike] = useSetFavoriteArticleMutation();
   const [deleteLike] = useDeleteFavoriteArticleMutation();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (favorited) {
-      deleteLike(slug);
+      await deleteLike(slug);
+      setFavorited(false);
+      onLikeChange(-1);
     } else {
-      setLike(slug);
+      await setLike(slug);
+      setFavorited(true);
+      onLikeChange(1);
     }
   };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tag } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,7 +14,7 @@ import classes from './card.module.scss';
 export default function Card({ article, isFull }) {
   const { isAuth, username } = useAuth();
   const navigate = useNavigate();
-  const { favoritesCount } = article;
+  const [favoritesCount, setFavoritesCount] = useState(article.favoritesCount);
 
   if (!article) {
     return <div>Article data is not available</div>;
@@ -45,6 +45,10 @@ export default function Card({ article, isFull }) {
     event.target.src = defaultAva;
   }
 
+  const handleLikeChange = (change) => {
+    setFavoritesCount(favoritesCount + change);
+  };
+
   return (
     <div className={classes.card}>
       <div className={classes['card-flex']}>
@@ -58,7 +62,7 @@ export default function Card({ article, isFull }) {
               {isFull ? title : limitText(title, 55)}
             </button>
             <div className={classes['like--flex']}>
-              <CardLike article={article} />
+              <CardLike article={article} onLikeChange={handleLikeChange} />
               <div className={classes.like__counter}>{favoritesCount}</div>
             </div>
           </div>
